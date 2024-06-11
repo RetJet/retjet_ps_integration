@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+    <name>retjet_ps_integration</name>
+    <displayName><![CDATA[RetJet Integration ]]></displayName>
+    <version><![CDATA[1.0.0]]></version>
+    <description><![CDATA[Module that generates and manages an API key for integration with the RetJet platform.]]></description>
+    <author><![CDATA[RetJet]]></author>
+    <tab><![CDATA[administration]]></tab>
+    <is_configurable>1</is_configurable>
+    <need_instance>0</need_instance>
+</module>
