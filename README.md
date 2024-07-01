@@ -1,5 +1,7 @@
 # RetJet Integration for PrestaShop
 
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 ## Overview
 
 The RetJet Integration module for PrestaShop 1.7+ is designed to simplify the integration process between your PrestaShop store and the RetJet platform. This module generates and manages an API key required for seamless integration, allowing you to securely connect your store with RetJet services.
@@ -76,7 +78,11 @@ To update the module to the latest version, follow these steps:
 
 ## Support
 
-For support and inquiries, please contact the RetJet team at [support@retjet.com](mailto:support@retjet.com).
+If you have any questions or encounter issues, visit the [Issues](https://github.com/RetJet/retjet-woo-integration/issues) section on GitHub.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
