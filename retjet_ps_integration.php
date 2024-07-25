@@ -5,7 +5,7 @@ if (!defined('_PS_VERSION_')) {
 
 class Retjet_Ps_Integration extends Module
 {
-    private $integrationBaseUrl = 'https://app.retjet.com/panel/sales_channel/add?data=';
+    private $integrationBaseUrl = 'https://app.retjet.dev/panel/sales_channel/add?data=';
 
     public function __construct()
     {
@@ -26,12 +26,42 @@ class Retjet_Ps_Integration extends Module
 
     public function install()
     {
-        return parent::install() && $this->createApiKey();
+        return parent::install()
+                && $this->createApiKey()
+                && $this->registerHook('displayFooter')
+                && $this->installConfiguration();
     }
 
     public function uninstall()
     {
-        return parent::uninstall() && $this->deleteApiKey();
+        return parent::uninstall()
+                && $this->deleteApiKey()
+                && $this->unregisterHook('displayFooter')
+                && $this->uninstallConfiguration();
+    }
+
+    private function installConfiguration()
+    {
+        return Configuration::updateValue('RETJET_COMPANY_ID', '');
+    }
+
+    private function uninstallConfiguration()
+    {
+        return Configuration::deleteByName('RETJET_COMPANY_ID');
+    }
+
+    public function hookDisplayFooter($params)
+    {
+        $controller = $this->context->controller;
+        if ($controller->php_self === 'cms') {
+            $companyId = Configuration::get('RETJET_COMPANY_ID');
+            $lang = $this->context->language->iso_code;
+            $this->context->smarty->assign(array(
+                'companyId' => $companyId,
+                'lang' => $lang
+            ));
+            return $this->display(__FILE__, 'views/templates/hook/displayFooter.tpl');
+        }
     }
 
     public function getContent()
@@ -45,6 +75,12 @@ class Retjet_Ps_Integration extends Module
             $this->context->cookie->__set('confirmations', $this->l('API Key deleted successfully.'));
             Tools::redirectAdmin(AdminController::$currentIndex.'&configure='.$this->name.'&token='.Tools::getAdminTokenLite('AdminModules'));
         }
+        if (Tools::isSubmit('submitRetJetConfig')) {
+            $companyId = Tools::getValue('RETJET_COMPANY_ID');
+            Configuration::updateValue('RETJET_COMPANY_ID', $companyId);
+            //$output .= $this->displayConfirmation($this->l('Settings updated.'));
+            $this->context->cookie->__set('confirmations', $this->l('Settings updated.'));
+        }
 
         $confirmations = $this->context->cookie->__get('confirmations');
         if ($confirmations) {
@@ -55,11 +91,12 @@ class Retjet_Ps_Integration extends Module
         return $this->renderForm();
     }
 
+
     public function renderForm()
     {
         $apiKey = Configuration::get('RETJET_INTEGRATION_API_KEY');
 
-        // check if key axists
+        // check if key exists
         if ($apiKey) {
             $id_webservice_account = Db::getInstance()->getValue('SELECT `id_webservice_account` FROM `'._DB_PREFIX_.'webservice_account` WHERE `key` = \''.pSQL($apiKey).'\'');
             if (!$id_webservice_account) {
@@ -73,11 +110,12 @@ class Retjet_Ps_Integration extends Module
 
         $this->context->smarty->assign(array(
             'api_key' => $apiKey,
+            'company_id' => Configuration::get('RETJET_COMPANY_ID'),
             'form_action' => AdminController::$currentIndex.'&configure='.$this->name.'&token='.Tools::getAdminTokenLite('AdminModules'),
             'integration_url' => $integrationUrl
         ));
 
-        return $this->display(__FILE__, 'views/templates/admin/api_key.tpl');
+        return $this->display(__FILE__, 'views/templates/admin/configuration.tpl');
     }
 
     public function createApiKey()

@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <module>
     <name>retjet_ps_integration</name>
-    <displayName><![CDATA[RetJet Integration ]]></displayName>
+    <displayname><![CDATA[RetJet Integration]]></displayname>
+    <description><![CDATA[This module generates and manages an API key for RetJet and injects RetJet request form into the returns page.]]></description>
     <version><![CDATA[1.0.0]]></version>
-    <description><![CDATA[Module that generates and manages an API key for integration with the RetJet platform.]]></description>
-    <author><![CDATA[RetJet]]></author>
-    <tab><![CDATA[administration]]></tab>
-    <is_configurable>1</is_configurable>
-    <need_instance>0</need_instance>
+    <author><![CDATA[Your Name]]></author>
+    <email><![CDATA[your.email@example.com]]></email>
+    <tab><![CDATA[others]]></tab>
+    <url><![CDATA[https://example.com]]></url>
+    <confirmUninstall><![CDATA[Are you sure you want to uninstall this module?]]></confirmUninstall>
+    <currencies/>
+    <configurable>true</configurable>
 </module>
