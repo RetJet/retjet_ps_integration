@@ -5,7 +5,9 @@ if (!defined('_PS_VERSION_')) {
 
 class Retjet_Ps_Integration extends Module
 {
-    private $integrationBaseUrl = 'https://app.retjet.dev/panel/sales_channel/add?data=';
+    private $rjBaseUrl = 'https://app.retjet.com';
+    private $integrationBaseUri = '/panel/sales_channel/add?data=';
+    private $integrationBaseUrl = '';
 
     public function __construct()
     {
@@ -22,6 +24,7 @@ class Retjet_Ps_Integration extends Module
         $this->description = $this->l('Module that generates and manages an API key for integration with the RetJet platform.');
 
         $this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
+        $this->integrationBaseUrl = $this->rjBaseUrl.$this->integrationBaseUri;
     }
 
     public function install()
@@ -112,7 +115,8 @@ class Retjet_Ps_Integration extends Module
             'api_key' => $apiKey,
             'company_id' => Configuration::get('RETJET_COMPANY_ID'),
             'form_action' => AdminController::$currentIndex.'&configure='.$this->name.'&token='.Tools::getAdminTokenLite('AdminModules'),
-            'integration_url' => $integrationUrl
+            'integration_url' => $integrationUrl,
+            'rj_base_url' => $this->rjBaseUrl
         ));
 
         return $this->display(__FILE__, 'views/templates/admin/configuration.tpl');
