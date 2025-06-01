@@ -1,3 +1,12 @@
+{*
+ * RetJet - PrestaShop Integration Module
+ *
+ * @author    RetJet
+ * @copyright Copyright (c) RetJet
+ *
+ * https://www.retjet.com
+ *}
+
 <script>
 window.retJet = {
     "companyId": "{$companyId}",

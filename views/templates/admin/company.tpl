@@ -1,3 +1,12 @@
+{*
+ * RetJet - PrestaShop Integration Module
+ *
+ * @author    RetJet
+ * @copyright Copyright (c) RetJet
+ *
+ * https://www.retjet.com
+ *}
+
 <form action="{$form_action}" method="post" class="defaultForm form-horizontal">
     <div class="panel">
         <div class="panel-heading">

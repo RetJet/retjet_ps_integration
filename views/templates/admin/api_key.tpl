@@ -1,3 +1,12 @@
+{*
+ * RetJet - PrestaShop Integration Module
+ *
+ * @author    RetJet
+ * @copyright Copyright (c) RetJet
+ *
+ * https://www.retjet.com
+ *}
+
 {if isset($confirmations) && $confirmations}
     <div class="alert alert-success">
         {foreach from=$confirmations item=msg}
