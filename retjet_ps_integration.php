@@ -1,4 +1,5 @@
 <?php
+
 /**
  * RetJet PrestaShop Integration Module
  *
@@ -15,8 +16,6 @@
 if (!defined('_PS_VERSION_')) {
     exit;
 }
-
-
 
 class Retjet_Ps_Integration extends Module
 {
@@ -35,27 +34,27 @@ class Retjet_Ps_Integration extends Module
         $this->bootstrap = true;
         parent::__construct();
 
-        $this->displayName = $this->l('RetJet Integration ');
+        $this->displayName = $this->l('RetJet Integration');
         $this->description = $this->l('Module that generates and manages an API key for integration with the RetJet platform.');
 
-        $this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
-        $this->integrationBaseUrl = $this->rjBaseUrl.$this->integrationBaseUri;
+        $this->ps_versions_compliancy = ['min' => '1.7', 'max' => _PS_VERSION_];
+        $this->integrationBaseUrl = $this->rjBaseUrl . $this->integrationBaseUri;
     }
 
     public function install()
     {
-        return parent::install()
-                && $this->createApiKey()
-                && $this->registerHook('displayFooter')
-                && $this->installConfiguration();
+        return parent::install() &&
+            $this->createApiKey() &&
+            $this->registerHook('displayFooter') &&
+            $this->installConfiguration();
     }
 
     public function uninstall()
     {
-        return parent::uninstall()
-                && $this->deleteApiKey()
-                && $this->unregisterHook('displayFooter')
-                && $this->uninstallConfiguration();
+        return parent::uninstall() &&
+            $this->deleteApiKey() &&
+            $this->unregisterHook('displayFooter') &&
+            $this->uninstallConfiguration();
     }
 
     private function installConfiguration()
@@ -74,10 +73,10 @@ class Retjet_Ps_Integration extends Module
         if ($controller->php_self === 'cms') {
             $companyId = Configuration::get('RETJET_COMPANY_ID');
             $lang = $this->context->language->iso_code;
-            $this->context->smarty->assign(array(
+            $this->context->smarty->assign([
                 'companyId' => $companyId,
                 'lang' => $lang
-            ));
+            ]);
             return $this->display(__FILE__, 'views/templates/hook/displayFooter.tpl');
         }
     }
@@ -87,12 +86,13 @@ class Retjet_Ps_Integration extends Module
         if (Tools::isSubmit('generate_api_key')) {
             $this->createApiKey();
             $this->context->cookie->__set('confirmations', $this->l('API Key generated successfully.'));
-            Tools::redirectAdmin(AdminController::$currentIndex.'&configure='.$this->name.'&token='.Tools::getAdminTokenLite('AdminModules'));
+            Tools::redirectAdmin(AdminController::$currentIndex . '&configure=' . $this->name . '&token=' . Tools::getAdminTokenLite('AdminModules'));
         } elseif (Tools::isSubmit('delete_api_key')) {
             $this->deleteApiKey();
             $this->context->cookie->__set('confirmations', $this->l('API Key deleted successfully.'));
-            Tools::redirectAdmin(AdminController::$currentIndex.'&configure='.$this->name.'&token='.Tools::getAdminTokenLite('AdminModules'));
+            Tools::redirectAdmin(AdminController::$currentIndex . '&configure=' . $this->name . '&token=' . Tools::getAdminTokenLite('AdminModules'));
         }
+
         if (Tools::isSubmit('submitRetJetConfig')) {
             $companyId = Tools::getValue('RETJET_COMPANY_ID');
             Configuration::updateValue('RETJET_COMPANY_ID', $companyId);
@@ -102,13 +102,12 @@ class Retjet_Ps_Integration extends Module
 
         $confirmations = $this->context->cookie->__get('confirmations');
         if ($confirmations) {
-            $this->context->smarty->assign('confirmations', array($confirmations));
+            $this->context->smarty->assign('confirmations', [$confirmations]);
             $this->context->cookie->__unset('confirmations');
         }
 
         return $this->renderForm();
     }
-
 
     public function renderForm()
     {
@@ -116,7 +115,7 @@ class Retjet_Ps_Integration extends Module
 
         // check if key exists
         if ($apiKey) {
-            $id_webservice_account = Db::getInstance()->getValue('SELECT `id_webservice_account` FROM `'._DB_PREFIX_.'webservice_account` WHERE `key` = \''.pSQL($apiKey).'\'');
+            $id_webservice_account = Db::getInstance()->getValue('SELECT `id_webservice_account` FROM `' . _DB_PREFIX_ . 'webservice_account` WHERE `key` = \'' . pSQL($apiKey) . '\'');
             if (!$id_webservice_account) {
                 // if not exists, remove from configuration
                 Configuration::deleteByName('RETJET_INTEGRATION_API_KEY');
@@ -126,13 +125,13 @@ class Retjet_Ps_Integration extends Module
 
         $integrationUrl = $this->getIntegrationUrl($apiKey);
 
-        $this->context->smarty->assign(array(
+        $this->context->smarty->assign([
             'api_key' => $apiKey,
             'company_id' => Configuration::get('RETJET_COMPANY_ID'),
-            'form_action' => AdminController::$currentIndex.'&configure='.$this->name.'&token='.Tools::getAdminTokenLite('AdminModules'),
+            'form_action' => AdminController::$currentIndex . '&configure=' . $this->name . '&token=' . Tools::getAdminTokenLite('AdminModules'),
             'integration_url' => $integrationUrl,
             'rj_base_url' => $this->rjBaseUrl
-        ));
+        ]);
 
         return $this->display(__FILE__, 'views/templates/admin/configuration.tpl');
     }
@@ -170,49 +169,49 @@ class Retjet_Ps_Integration extends Module
         $id_webservice_account = (int)$webserviceAccount->id;
 
         // Check if the entry already exists to avoid duplicate entries
-        $exists = Db::getInstance()->getValue('SELECT COUNT(*) FROM '._DB_PREFIX_.'webservice_account_shop WHERE id_webservice_account = '.$id_webservice_account.' AND id_shop = '.$id_shop);
+        $exists = Db::getInstance()->getValue('SELECT COUNT(*) FROM ' . _DB_PREFIX_ . 'webservice_account_shop WHERE id_webservice_account = ' . $id_webservice_account . ' AND id_shop = ' . $id_shop);
 
         if (!$exists) {
-            Db::getInstance()->insert('webservice_account_shop', array(
+            Db::getInstance()->insert('webservice_account_shop', [
                 'id_webservice_account' => $id_webservice_account,
                 'id_shop' => $id_shop,
-            ));
+            ]);
         }
 
         // Set permissions for all resources
         $resources = WebserviceRequest::getResources();
         foreach ($resources as $resource => $values) {
-            Db::getInstance()->insert('webservice_permission', array(
+            Db::getInstance()->insert('webservice_permission', [
                 'resource' => pSQL($resource),
                 'method' => 'GET',
                 'id_webservice_account' => $id_webservice_account,
-            ));
-            Db::getInstance()->insert('webservice_permission', array(
+            ]);
+            Db::getInstance()->insert('webservice_permission', [
                 'resource' => pSQL($resource),
                 'method' => 'PUT',
                 'id_webservice_account' => $id_webservice_account,
-            ));
-            Db::getInstance()->insert('webservice_permission', array(
+            ]);
+            Db::getInstance()->insert('webservice_permission', [
                 'resource' => pSQL($resource),
                 'method' => 'POST',
                 'id_webservice_account' => $id_webservice_account,
-            ));
-            Db::getInstance()->insert('webservice_permission', array(
+            ]);
+            Db::getInstance()->insert('webservice_permission', [
                 'resource' => pSQL($resource),
                 'method' => 'DELETE',
                 'id_webservice_account' => $id_webservice_account,
-            ));
+            ]);
         }
     }
 
     public function removeWebserviceKey($apiKey)
     {
-        $id_webservice_account = Db::getInstance()->getValue('SELECT `id_webservice_account` FROM `'._DB_PREFIX_.'webservice_account` WHERE `key` = \''.pSQL($apiKey).'\'');
+        $id_webservice_account = Db::getInstance()->getValue('SELECT `id_webservice_account` FROM `' . _DB_PREFIX_ . 'webservice_account` WHERE `key` = \'' . pSQL($apiKey) . '\'');
 
         if ($id_webservice_account) {
-            Db::getInstance()->delete('webservice_account_shop', 'id_webservice_account = '.(int)$id_webservice_account);
-            Db::getInstance()->delete('webservice_permission', 'id_webservice_account = '.(int)$id_webservice_account);
-            Db::getInstance()->delete('webservice_account', 'id_webservice_account = '.(int)$id_webservice_account);
+            Db::getInstance()->delete('webservice_account_shop', 'id_webservice_account = ' . (int)$id_webservice_account);
+            Db::getInstance()->delete('webservice_permission', 'id_webservice_account = ' . (int)$id_webservice_account);
+            Db::getInstance()->delete('webservice_account', 'id_webservice_account = ' . (int)$id_webservice_account);
         }
     }
 
@@ -227,14 +226,14 @@ class Retjet_Ps_Integration extends Module
         $formName = $domain . ' Auto-Configuration';
         $formLabel = $domain . ' Auto-Configuration by RetJet Module';
 
-        $data = array(
+        $data = [
             'form_name' => $formName,
             'form_label' => $formLabel,
             'form_channel_type' => 'prestashop',
-            'form_api_endpoint_url' => $shopDomain.'/api/',
+            'form_api_endpoint_url' => $shopDomain . '/api/',
             'form_api_auth_type' => 'bearer',
             'form_api_key' => $apiKey
-        );
+        ];
 
         $json_data = json_encode($data);
         $encoded_data = urlencode($json_data);

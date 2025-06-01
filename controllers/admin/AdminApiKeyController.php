@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Admin API Key Controller for RetJet PrestaShop Integration Module
  *
