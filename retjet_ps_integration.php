@@ -1,7 +1,22 @@
 <?php
+/**
+ * RetJet PrestaShop Integration Module
+ *
+ * This file contains the main module class for the RetJet PrestaShop Integration module.
+ * It handles module installation, uninstallation, and configuration.
+ *
+ * @author    RetJet
+ * @copyright Copyright (c) RetJet
+ * @license   GNU General Public License v3
+ * @version   1.0.0
+ * @link      https://www.retjet.com
+ */
+
 if (!defined('_PS_VERSION_')) {
     exit;
 }
+
+
 
 class Retjet_Ps_Integration extends Module
 {

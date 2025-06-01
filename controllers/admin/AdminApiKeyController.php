@@ -1,4 +1,21 @@
 <?php
+/**
+ * Admin API Key Controller for RetJet PrestaShop Integration Module
+ *
+ * This controller handles the management of API keys for the RetJet PrestaShop Integration module
+ * in the admin panel.
+ *
+ * @author    RetJet
+ * @copyright Copyright (c) RetJet
+ * @license   GNU General Public License v3
+ * @version   1.0.0
+ * @link      https://www.retjet.com
+ */
+
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class AdminApiKeyController extends ModuleAdminController
 {
     public function __construct()
