@@ -9,7 +9,7 @@
 
 <script>
 window.retJet = {
-    "companyId": "{$companyId}",
+    "companyId": "{$companyId|escape:'htmlall':'UTF-8'}",
     "lang": "{$lang|escape:'html':'UTF-8'}"
 };
 (function(){

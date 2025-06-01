@@ -7,7 +7,7 @@
  * https://www.retjet.com
  *}
 
-<form action="{$form_action}" method="post" class="defaultForm form-horizontal">
+<form action="{$form_action|escape:'htmlall':'UTF-8'}" method="post" class="defaultForm form-horizontal">
     <div class="panel">
         <div class="panel-heading">
             {l s='Add RetJet Request Form identifier' d='Modules.RetJetIntegration.Admin'}
@@ -21,7 +21,7 @@
                     <input type="text" name="RETJET_COMPANY_ID" value="{$company_id|escape:'html':'UTF-8'}" class="form-control" />
                     <p class="help-block">
                         {l s='Take it from RetJet panel: Request form page -> Settings -> Form identifier' d='Modules.RetJetIntegration.Admin'} <br />
-                        <strong><a href="{$rj_base_url}/panel/landing_page" target="_blank">{l s='Click here' d='Modules.RetJetIntegration.Admin'}</a></strong>
+                        <strong><a href="{$rj_base_url|escape:'htmlall':'UTF-8'}/panel/landing_page" target="_blank">{l s='Click here' d='Modules.RetJetIntegration.Admin'}</a></strong>
                         {l s='and go to RetJet panel.' d='Modules.RetJetIntegration.Admin'}
                     </p>
                 </div>

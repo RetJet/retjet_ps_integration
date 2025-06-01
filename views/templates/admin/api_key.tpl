@@ -10,7 +10,7 @@
 {if isset($confirmations) && $confirmations}
     <div class="alert alert-success">
         {foreach from=$confirmations item=msg}
-            <p>{$msg}</p>
+            <p>{$msg|escape:'htmlall':'UTF-8'}</p>
         {/foreach}
     </div>
 {/if}
@@ -18,7 +18,7 @@
 {if isset($errors) && $errors}
     <div class="alert alert-danger">
         {foreach from=$errors item=msg}
-            <p>{$msg}</p>
+            <p>{$msg|escape:'htmlall':'UTF-8'}</p>
         {/foreach}
     </div>
 {/if}
@@ -37,7 +37,7 @@
                 </label>
 
                 <div class="col-lg-8">
-                    <input type="text" class="form-control" value="{$api_key}" disabled="disabled" />
+                    <input type="text" class="form-control" value="{$api_key|escape:'htmlall':'UTF-8'}" disabled="disabled" />
 
                     <p class="help-block">
                         {l s='API Key used for RetJet integration.' d='Modules.RetJetIntegration.Admin'}
@@ -51,7 +51,7 @@
                 </label>
 
                 <div class="col-lg-8">
-                    <a href="{$integration_url}" target="_blank">
+                    <a href="{$integration_url|escape:'htmlall':'UTF-8'}" target="_blank">
                         <button type="button" class="btn btn-primary">
                             <i class="icon-link"></i> {l s='Start integration' d='Modules.RetJetIntegration.Admin'}
                         </button>
@@ -69,7 +69,7 @@
                 </label>
 
                 <div class="col-lg-8">
-                    <form method="post" action="{$form_action}">
+                    <form method="post" action="{$form_action|escape:'htmlall':'UTF-8'}">
                         <input type="hidden" name="generate_api_key" value="1">
                         <button type="submit" class="btn btn-default">
                             <i class="icon-refresh"></i> {l s='Generate' d='Admin.Actions'}
@@ -87,7 +87,7 @@
 
     <div class="panel-footer">
         {if $api_key}
-            <form id="delete-api-key-form" method="post" action="{$form_action}" onsubmit="return confirm('Are you sure you want to delete the API key?');">
+            <form id="delete-api-key-form" method="post" action="{$form_action|escape:'htmlall':'UTF-8'}" onsubmit="return confirm('Are you sure you want to delete the API key?');">
                 <input type="hidden" name="delete_api_key" value="1">
                 <button type="submit" class="btn btn-danger pull-right">
                     <i class="icon-trash"></i> {l s='Delete' d='Admin.Actions'}
