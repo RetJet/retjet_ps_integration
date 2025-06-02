@@ -9,9 +9,8 @@
  * @copyright Copyright (c) RetJet
  * @license   GNU General Public License v3
  * @version   1.0.0
- * @link      https://www.retjet.com
+ * @see      https://www.retjet.com
  */
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }
